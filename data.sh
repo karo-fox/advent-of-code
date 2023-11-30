@@ -1,13 +1,17 @@
 #!/bin/bash
 month=$(date +"%m")
 if [ $month -ne 12 ]; then
-    echo "It's not December, AoC hasn't started yet"
+    echo "It's not December, AoC hasn't started yet."
     exit
 fi
 
-pipenv shell
+hour=$(date +"%H")
+if [ $hour -lt 6 ]; then
+    echo "It's too early, today's challenge hasn't been posted yet."
+    exit
+fi
 
-year=$(date +"%y")
+year=$(date +"%Y")
 year_dir="./$year"
 
 if [ ! -d $year_dir ]; then
@@ -25,8 +29,8 @@ if [ ! -d $day_dir ]; then
     touch "$day_dir/example.txt"
 fi
 
-aocd $year $day > "$day_dir/input.txt"
-aocd $year $day --example > "$day_dir/example.txt"
+pipenv run aocd $year $day > "$day_dir/input.txt"
+pipenv run aocd $year $day --example > "$day_dir/example.txt"
 
 echo "from aocd import submit
 
