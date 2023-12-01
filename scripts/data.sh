@@ -1,4 +1,5 @@
 #!/bin/bash
+
 month=$(date +"%m")
 
 if [ $month -ne 12 ]; then
@@ -31,6 +32,8 @@ if [ ! -d $day_dir ]; then
     touch "$day_dir/part2.py"
     touch "$day_dir/input.txt"
     touch "$day_dir/example.txt"
+    touch "$day_dir/result1.txt"
+    touch "$day_dir/result2.txt"
 fi
 
 if [ ! -s "$day_dir/input.txt" ] && [ ! -s "$day_dir/example.txt" ]; then
@@ -39,12 +42,9 @@ if [ ! -s "$day_dir/input.txt" ] && [ ! -s "$day_dir/example.txt" ]; then
 fi
 
 if [ ! -s "$day_dir/part1.py" ] && [ ! -s "$day_dir/part2.py" ]; then
-    printf "$(cat "$wd/templates/template.py.txt")" $year $day 1 "./$year/day$day/input.txt" > "$day_dir/part1.py"
-    printf "$(cat "$wd/templates/template.py.txt")" $year $day 2 "./$year/day$day/input.txt" > "$day_dir/part2.py"
+    rd="./$year/day$day"
+    printf "$(cat "$wd/templates/template.py.txt")" $year $day 1 "$rd/input.txt" "$rd/result1.txt" > "$day_dir/part1.py"
+    printf "$(cat "$wd/templates/template.py.txt")" $year $day 2 "$rd/input.txt" "$rd/result2.txt" > "$day_dir/part2.py"
 fi
-
-
-printf "$(cat "$wd/templates/template.py.txt")" $year $day 1 "./$year/day$day/input.txt" > "$day_dir/part1.test.py"
-printf "$(cat "$wd/templates/template.py.txt")" $year $day 2 "./$year/day$day/input.txt" > "$day_dir/part2.test.py"
 
 pipenv shell

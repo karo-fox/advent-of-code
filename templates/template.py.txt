@@ -9,3 +9,6 @@ with open("%s") as file:
 
 result = solve(filecontent)
 print(result)
+
+with open("%s", "w") as file:
+    file.write(result)
