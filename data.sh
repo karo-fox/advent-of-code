@@ -29,10 +29,14 @@ if [ ! -d $day_dir ]; then
     touch "$day_dir/example.txt"
 fi
 
-pipenv run aocd $year $day > "$day_dir/input.txt"
+if [ ! -s "$day_dir/input.txt" ] && [ ! -s "$day_dir/example.txt" ]; then
+    pipenv run aocd $year $day > "$day_dir/input.txt"
+fi
+
 pipenv run aocd $year $day --example > "$day_dir/example.txt"
 
-echo "from aocd import submit
+if [ ! -s "$day_dir/part1.py" ] && [ ! -s "$day_dir/part2.py" ]; then
+    echo "from aocd import submit
 
 def solve(data):
     pass
@@ -44,10 +48,10 @@ with open('input.txt') as file:
 result = solve(filecontent)
 #submit(result, part='a', day=$day, year=$year)" > "$day_dir/part1.py"
 
-echo "from aocd import submit
+    echo "from aocd import submit
 
 def solve(data):
-    pass
+        pass
 
 filecontent = ''
 with open('input.txt') as file:
@@ -55,3 +59,6 @@ with open('input.txt') as file:
 
 result = solve(filecontent)
 #submit(result, part='b', day=$day, year=$year)" > "$day_dir/part2.py"
+fi
+
+pipenv shell
