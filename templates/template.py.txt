@@ -1,7 +1,5 @@
 """AoC %s day %s part %s"""
 
-from aocd import submit
-
 def solve(data):
     pass
 

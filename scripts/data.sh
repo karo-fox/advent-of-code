@@ -13,8 +13,10 @@ if [ $hour -lt 6 ]; then
     exit
 fi
 
+wd=$(dirname $0)/..
+
 year=$(date +"%Y")
-year_dir="./$year"
+year_dir="$wd/$year"
 
 if [ ! -d $year_dir ]; then
     mkdir "$year_dir"
@@ -37,8 +39,12 @@ if [ ! -s "$day_dir/input.txt" ] && [ ! -s "$day_dir/example.txt" ]; then
 fi
 
 if [ ! -s "$day_dir/part1.py" ] && [ ! -s "$day_dir/part2.py" ]; then
-    printf "$(cat ".templates/template.py.txt")" $year $day 1 "$day_dir/input.txt" > "$day_dir/part1.py"
-    printf "$(cat ".templates/template.py.txt")" $year $day 2 "$day_dir/input.txt" > "$day_dir/part2.py"
+    printf "$(cat "$wd/templates/template.py.txt")" $year $day 1 "./$year/day$day/input.txt" > "$day_dir/part1.py"
+    printf "$(cat "$wd/templates/template.py.txt")" $year $day 2 "./$year/day$day/input.txt" > "$day_dir/part2.py"
 fi
+
+
+printf "$(cat "$wd/templates/template.py.txt")" $year $day 1 "./$year/day$day/input.txt" > "$day_dir/part1.test.py"
+printf "$(cat "$wd/templates/template.py.txt")" $year $day 2 "./$year/day$day/input.txt" > "$day_dir/part2.test.py"
 
 pipenv shell
