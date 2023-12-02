@@ -11,4 +11,4 @@ result = solve(filecontent)
 print(result)
 
 with open("%s", "w") as file:
-    file.write(result)
+    file.write(str(result))
