@@ -10,10 +10,7 @@ SEED_RANGE_PATTERN = r" (\d+) (\d+)"
 
 def solve(data: str):
     segments = data.split("\n\n")
-    seeds = get_seeds(segments[0])
-    for segment in segments[1:]:
-        seeds = map_seeds(seeds, segment)
-    return get_min(seeds)
+    return map_seeds(get_seeds(segments[0]), segments[1:])
 
 
 def get_seeds(data: str) -> [int]:
@@ -26,13 +23,39 @@ def get_seeds(data: str) -> [int]:
     return result
 
 
-def map_seeds(seeds: [(int, int)], segment: str) -> [(int, int)]:
-    result = []
-    mapping = partial(source_to_destination, re.split(r":\n", segment)[1])
+def map_seeds(seeds: [(int, int)], segments: [str]) -> [(int, int)]:
+    seed_to_soil = partial(source_to_destination, re.split(r":\n", segments[0])[1])
+    soil_to_fertilizer = partial(
+        source_to_destination, re.split(r":\n", segments[1])[1]
+    )
+    fertilizer_to_water = partial(
+        source_to_destination, re.split(r":\n", segments[2])[1]
+    )
+    water_to_light = partial(source_to_destination, re.split(r":\n", segments[3])[1])
+    light_to_temperature = partial(
+        source_to_destination, re.split(r":\n", segments[4])[1]
+    )
+    temperature_to_humidity = partial(
+        source_to_destination, re.split(r":\n", segments[5])[1]
+    )
+    humidity_to_location = partial(
+        source_to_destination, re.split(r":\n", segments[6])[1]
+    )
+    min_grown = seeds[0][0]
     for start, length in seeds:
-        seed_list = [mapping(seed) for seed in range(start, start + length)]
-        result.extend(get_ranges(seed_list))
-    return result
+        for seed in range(start, start + length):
+            grown = humidity_to_location(
+                temperature_to_humidity(
+                    light_to_temperature(
+                        water_to_light(
+                            fertilizer_to_water(soil_to_fertilizer(seed_to_soil(seed)))
+                        )
+                    )
+                )
+            )
+            if grown < min_grown:
+                min_grown = grown
+    return min_grown
 
 
 def source_to_destination(map_data: str, seed: int) -> int:
@@ -63,7 +86,6 @@ def get_ranges(seeds: [int]) -> [(int, int)]:
         result.append((start, range_len))
         idx += 1
     return result
-        
 
 
 def get_min(seeds: [(int, int)]) -> int:
