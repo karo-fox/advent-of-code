@@ -23,7 +23,11 @@ if [ ! -d $year_dir ]; then
     mkdir "$year_dir"
 fi 
 
-day=$(date +"%d")
+if [ $# -eq 0 ]; then
+    day=$(date +"%d")
+else
+    day=$1
+fi
 day_dir="$year_dir/day$day"
 
 if [ ! -d $day_dir ]; then
