@@ -1,0 +1,14 @@
+defmodule Part%s do
+  @doc """
+  AoC %s day %s part %s
+  """
+
+  @spec solve(String.t()) :: String.t()
+  def solve(data), do:
+    :ok
+end
+
+data = File.read!("%s")
+result = Part%s.solve(data)
+IO.puts(result)
+File.write!("%s", result)

@@ -1,6 +1,6 @@
 """AoC %s day %s part %s"""
 
-def solve(data: str):
+def solve(data: str) -> str:
     pass
 
 filecontent = ""
